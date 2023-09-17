@@ -36,6 +36,30 @@ class loginAPI(GenericAPIView):
         username=request.data.get('username')
         password=request.data.get('password')
         logreg=login.objects.filter(username=username,password=password)
+        if (logreg.count()>0):
+            serializer=loginSerializer(logreg,many=True)
+            for i in serializer.data:
+                l_id=i['id']
+                role=i['role']
+            regdata=UserRegister.objects.all().filter(log_id=l_id).values()
+            for i in regdata:
+                user_id=i['id']
+            return Response({'data':{'username':username,'log_id':l_id,'role':role,'user_id':user_id},'message':'success','success':True},status=status.HTTP_201_CREATED)
+        return Response({'data':'invalid credentials','success':False},status=status.HTTP_400_BAD_REQUEST)
+    
+class Bookingapi(GenericAPIView):
+    def post(self,request):
+        Name=request.data.get('name')
+        email=request.data.get('email')
+        contact=request.data.get('contact')
+        date=request.data.get('date')
+        time=request.data.get('time')
+        TypeofEvent=request.data.get('TypeofEvent')
+        NoofPerson=request.data.get('namNoofPersone')
+
+
+
+
         
 
 
